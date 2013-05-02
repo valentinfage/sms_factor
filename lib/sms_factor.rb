@@ -32,7 +32,7 @@ class SmsFactor
     r = Nokogiri::XML(result.body)
     code  = r.at_css('response/status').text
     msg   = r.at_css('response/message').text
-    cred  = r.at_css('response/credits').text
+    cred  = r.at_css('response/credits').text rescue nil
     
     return SmsFactor::SmsResponse.new(code == "1", cred.to_i, msg)
   end
