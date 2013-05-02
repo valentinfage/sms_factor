@@ -1,4 +1,38 @@
-sms_factor
-==========
+== SMS Factor
 
 An easy way to use API SMS of http://www.smsfactor.com/ (http://www.smsfactor.com/SMS-integration-API-HTML)
+
+== Installation
+
+You can install sms_factor by adding this line in your Gemfile :
+
+  gem 'resque-noti-failure'
+
+And then :
+
+  bundle install 
+
+== Configuration
+
+To use this gem, configure SmsFactor using your API information :
+
+  SmsFactor::Init.configure do |config|
+    config.api_url          = 'https://secure.smsfactor.com'
+    config.api_login        = '<your_api_login>'
+    config.api_password     = '<your_api_password>
+    config.api_default_from = '<a_default_from_name>
+  end
+
+== Use
+
+To send a SMS :
+
+  r = SmsFactor.alert("Hello World", "336++++++++")
+
+To retrieve your credit after the sms was sent :
+
+  r.credit
+
+== Copyright
+
+Copyright (c) 2013 Julien Séveno
