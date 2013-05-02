@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
                       "lib/sms_factor/sms_response.rb"
                     ]
   s.homepage      = 'https://github.com/juseveno/sms_factor'
-  s.licenses      = ["MIT"]
+  s.licenses      = ["LGPL"]
   s.require_paths = ["lib"]
   s.extra_rdoc_files = ["LICENSE.txt", "README.rdoc"]
   s.add_runtime_dependency "faraday", [">= 0.8.6"]
