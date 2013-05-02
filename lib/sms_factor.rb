@@ -31,7 +31,7 @@ class SmsFactor
     
     r = Nokogiri::XML(result.body)
     
-    code, msg, cred = if r.at_css('response/status')
+    code, msg, cred = if r.at_css('response/status').nil?
       [
         false,
         "Unable to connect to SMS Factor",
