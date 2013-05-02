@@ -30,9 +30,20 @@ class SmsFactor
     )
     
     r = Nokogiri::XML(result.body)
-    code  = r.at_css('response/status').text
-    msg   = r.at_css('response/message').text
-    cred  = r.at_css('response/credits').text rescue nil
+    
+    code, msg, cred = if r.at_css('response/status')
+      [
+        false,
+        "Unable to connect to SMS Factor",
+        nil
+      ]
+    else
+      [
+        r.at_css('response/status').text,
+        r.at_css('response/message').text,
+        (r.at_css('response/credits') ? r.at_css('response/credits').text : nil)
+      ]
+    end
     
     return SmsFactor::SmsResponse.new(code == "1", cred.to_i, msg)
   end
