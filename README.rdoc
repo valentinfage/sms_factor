@@ -19,8 +19,8 @@ To use this gem, configure SmsFactor using your API information :
   SmsFactor::Init.configure do |config|
     config.api_url          = 'https://secure.smsfactor.com'
     config.api_login        = '<your_api_login>'
-    config.api_password     = '<your_api_password>
-    config.api_default_from = '<a_default_from_name>
+    config.api_password     = '<your_api_password>'
+    config.api_default_from = '<a_default_from_name>'
   end
 
 == Use
