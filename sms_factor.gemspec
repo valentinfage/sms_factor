@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
   s.licenses      = ["MIT"]
   s.require_paths = ["lib"]
   s.extra_rdoc_files = ["LICENSE.txt", "README.rdoc"]
-  s.add_runtime_dependency "faraday", [">= 0.8.7"]
+  s.add_runtime_dependency "faraday", [">= 0.8.6"]
   s.add_runtime_dependency "nokogiri", [">= 1.5.9"]
   s.required_ruby_version = '>= 2.0.0'
   s.requirements << 'faraday, >= 0.8.7'
