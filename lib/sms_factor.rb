@@ -11,7 +11,7 @@ class SmsFactor
     @recipients = recipients.kind_of?(Array) ? recipients : [recipients]
   end
   
-  def send_alert
+  def send_sms
     conn = Faraday.new(:url => SmsFactor::Init.configuration.api_url, :ssl => {:verify => false}) do |faraday|
       faraday.request  :url_encoded
       faraday.response :logger
@@ -48,9 +48,9 @@ class SmsFactor
     return SmsFactor::SmsResponse.new(code == "1", cred.to_i, msg)
   end
   
-  def self.alert(message, recipients, from = nil)
+  def self.sms(message, recipients, from = nil)
     alert = SmsFactor.new(message, recipients, from)
-    return alert.send_alert
+    return alert.send_sms
   end
 end
 

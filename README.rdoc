@@ -6,7 +6,7 @@ An easy way to use API SMS of http://www.smsfactor.com/ (http://www.smsfactor.co
 
 You can install sms_factor by adding this line in your Gemfile :
 
-  gem 'sms_factor'
+  gem 'sms_factor', :git => 'git://github.com/juseveno/sms_factor.git'
 
 And then :
 
@@ -27,9 +27,9 @@ To use this gem, configure SmsFactor using your API information :
 
 To send a SMS :
 
-  r = SmsFactor.alert('Hello World', '336++++++++') # to a single recipient
-  r = SmsFactor.alert('Hello World', ['336++++++++', '336++++++++', '336++++++++']) # to multiple recipients
-  r = SmsFactor.alert('Hello World', '336++++++++', 'Toto') # to override default from
+  r = SmsFactor.sms('Hello World', '336++++++++') # to a single recipient
+  r = SmsFactor.sms('Hello World', ['336++++++++', '336++++++++', '336++++++++']) # to multiple recipients
+  r = SmsFactor.sms('Hello World', '336++++++++', 'Toto') # to override default from
 
 To retrieve your credit after the sms was sent :
 
