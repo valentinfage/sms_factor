@@ -1,3 +1,5 @@
+# -*- encoding: utf-8 -*-
+
 Gem::Specification.new do |s|
   s.name          = 'sms_factor'
   s.version       = '0.1.0'
