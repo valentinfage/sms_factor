@@ -1,6 +1,6 @@
 == SMS Factor
 
-An easy way to use API SMS of http://www.smsfactor.com/ (http://www.smsfactor.com/SMS-integration-API-HTML)
+An easy way to use API SMS of http://www.smsfactor.com/ (http://www.smsfactor.com/api-sms/)
 
 == Installation
 
@@ -17,10 +17,10 @@ And then :
 To use this gem, configure SmsFactor using your API information :
 
   SmsFactor::Init.configure do |config|
-    config.api_url          = 'https://secure.smsfactor.com'
-    config.api_login        = '<your_api_login>'
-    config.api_password     = '<your_api_password>'
-    config.api_default_from = '<a_default_from_name>'
+    config.api_url          = 'http://api.smsfactor.com'
+    config.api_login        = '<your_email@your_company.com>'
+    config.api_password     = '<your_password>'
+    config.api_default_from = '<a_default_sender_name>'
   end
 
 == Use
@@ -37,4 +37,4 @@ To retrieve your credit after the sms was sent :
 
 == Copyright
 
-Copyright (c) 2013 Julien Séveno
+Copyright (c) 2015 Julien Séveno

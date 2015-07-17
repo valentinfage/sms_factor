@@ -1,12 +1,20 @@
 class SmsFactor::SmsResponse
-  attr_accessor :is_success
-  attr_accessor :credit
-  attr_accessor :message
+  attr_accessor :response
   
-  def initialize(is_success, credit, message)
-    @is_success = is_success
-    @credit     = credit
-    @message    = message
+  def initialize(response)
+    @response = JSON.parse(response)
   end
   
+  def success?
+    @response['status'] == 1
+  end
+  
+  def message
+    @response['message']
+  end
+  
+  def method_missing(m, *args, &block)
+    super unless @response.keys.include?(m.to_s)
+    @response[m.to_s]
+  end
 end
