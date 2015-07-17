@@ -6,7 +6,7 @@ An easy way to use API SMS of http://www.smsfactor.com/ (http://www.smsfactor.co
 
 You can install sms_factor by adding this line in your Gemfile :
 
-  gem 'sms_factor', :git => 'git://github.com/juseveno/sms_factor.git'
+  gem 'sms_factor'
 
 And then :
 
