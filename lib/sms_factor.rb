@@ -1,56 +1,62 @@
-require 'faraday'
+require 'rest-client'
 require 'nokogiri'
 
 class SmsFactor
+  attr_accessor :message, :recipients, :sender
   
-  def initialize(message, recipients, from = nil)
+  def initialize(message, recipients, sender = nil)
     raise "The configuration is not complete. Please define api_url, api_login, api_password and api_default_from" unless SmsFactor::Init.configuration.is_valid?
     
-    @from       = (from.nil? ? SmsFactor::Init.configuration.api_default_from : from)
-    @message    = message
-    @recipients = recipients.kind_of?(Array) ? recipients : [recipients]
+    @sender      ||= SmsFactor::Init.configuration.api_default_from
+    @recipients    = recipients.kind_of?(Array) ? recipients : [recipients]
+    @message       = message
   end
   
-  def send_sms
-    conn = Faraday.new(:url => SmsFactor::Init.configuration.api_url, :ssl => {:verify => false}) do |faraday|
-      faraday.request  :url_encoded
-      faraday.response :logger
-      faraday.adapter  Faraday.default_adapter
-    end
+  def build
+    {
+      sms: auth_credentials.merge(
+        message: {text: @message, sender: @sender, pushtype: 'alert'},
+          recipients: {
+            gsm: @recipients.collect{|recipient| {value: recipient}}
+          }
+      )
+    }
+  end
+  
+  def auth_credentials
+    @auth_credentials ||= {
+                            authentication: {
+                              username: SmsFactor::Init.configuration.api_login,
+                              password: SmsFactor::Init.configuration.api_password
+                            }
+                          }
+  end
+  
+  def deliver(delay: :now, check: false)
+    data  =   case delay
+                when nil, :now
+                  build
+                else
+                  build[:sms].merge!({delay: delay})
+                end
+                
+    url   =   "#{SmsFactor::Init.configuration.api_url}/send"
+    url   =   "#{url}/simulate" if check
     
-    infos = "<sms><authentification><username>#{SmsFactor::Init.configuration.api_login}</username><password>#{SmsFactor::Init.configuration.api_password}</password></authentification><message><sender>#{@from}</sender><text>#{@message}</text></message><recipients>"
-    @recipients.each do |recipient|
-      infos << "<gsm gsmsmsid='#{Time.now.to_i}'>#{recipient}</gsm>"
-    end
-    infos << "</recipients></sms>"
-    
-    result = conn.post(
-      '/API/apiV2.php',
-      "XML=#{infos}"
+    SmsFactor::SmsResponse.new(
+      RestClient.post(
+        url,
+        { data: data.to_json },
+        content_type: :json,
+        accept:       :json,
+        verify_ssl:   false
+      )
     )
-    
-    r = Nokogiri::XML(result.body)
-    
-    code, msg, cred = if r.at_css('response/status').nil?
-      [
-        false,
-        "Unable to connect to SMS Factor",
-        nil
-      ]
-    else
-      [
-        r.at_css('response/status').text,
-        r.at_css('response/message').text,
-        (r.at_css('response/credits') ? r.at_css('response/credits').text : nil)
-      ]
-    end
-    
-    return SmsFactor::SmsResponse.new(code == "1", cred.to_i, msg)
   end
   
-  def self.sms(message, recipients, from = nil)
-    alert = SmsFactor.new(message, recipients, from)
-    return alert.send_sms
+  def self.sms(message, recipients, sender = nil)
+    sms = SmsFactor.new(message, recipients, sender)
+    sms.deliver
   end
 end
 
