@@ -1,4 +1,4 @@
-require 'rest-client'
+require 'rest-client', '~> 1.8'
 require 'nokogiri'
 
 class SmsFactor
