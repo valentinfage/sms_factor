@@ -4,10 +4,10 @@ require 'nokogiri'
 class SmsFactor
   attr_accessor :message, :recipients, :sender
   
-  def initialize(message, recipients, sender = nil)
-    raise "The configuration is not complete. Please define api_url, api_login, api_password and api_default_from" unless SmsFactor::Init.configuration.is_valid?
+  def initialize(message, recipients, sender)
+    raise "The configuration is not complete" unless SmsFactor::Init.configuration.is_valid?
     
-    @sender      ||= SmsFactor::Init.configuration.api_default_from
+    @sender        = sender 
     @recipients    = recipients.kind_of?(Array) ? recipients : [recipients]
     @message       = message
   end
